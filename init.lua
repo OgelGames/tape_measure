@@ -84,3 +84,5 @@ minetest.register_tool("tape_measure:tape_measure", {
 	on_place = waypoint,
 	on_secondary_use = waypoint,
 })
+
+dofile(minetest.get_modpath("tape_measure").."/crafting.lua")

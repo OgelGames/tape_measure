@@ -25,7 +25,14 @@ If you hold sneak while setting a position or waypoint, the position of the adja
 
 ## Dependencies
 
-There are no required dependencies, but if you are using [Minetest Game](https://github.com/minetest/minetest_game) or [Mineclone 2](https://content.minetest.net/packages/Wuzzy/mineclone2/) a recipe will be automatically added to craft the tape measure.
+**Optional**
+
+- `default` (included in [Minetest Game](https://github.com/minetest/minetest_game))
+- `dye` (included in [Minetest Game](https://github.com/minetest/minetest_game))
+- `mcl_core` (included in [Mineclone 2](https://content.minetest.net/packages/Wuzzy/mineclone2/))
+- `mcl_dye` (included in [Mineclone 2](https://content.minetest.net/packages/Wuzzy/mineclone2/))
+- [`basic_materials`](https://github.com/mt-mods/basic_materials)
+- [`technic`](https://github.com/mt-mods/technic)
 
 ## Installation
 
