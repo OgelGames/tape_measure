@@ -1,5 +1,4 @@
 # Simple Tape Measure [tape_measure]
-
  
  [![luacheck](https://github.com/OgelGames/tape_measure/workflows/luacheck/badge.svg)](https://github.com/OgelGames/tape_measure/actions)
 [![License](https://img.shields.io/badge/License-MIT%20and%20CC%20BY--SA%204.0-green.svg)](LICENSE.md)
@@ -18,10 +17,9 @@ Punch a node to set the start position, punch another node to set the end positi
 
 The distance is the real vector distance between the two positions. The size is the dimensions in nodes of a imaginary box that contains both points.
 
-You can also right-click a node to set a temporary waypoint, which can be useful for larger measurements.
+You can also right-click a node to set a temporary waypoint, which can be useful for larger measurements. Waypoints can be cleared by right-clicking the same position, or by right-clicking while not pointing at a node.
 
-If you hold sneak while setting a position or waypoint, the position of the adjacent node will be used instead. This can be used to measure air.
-
+If you hold sneak while setting a position or waypoint, the position of the adjacent node will be used instead. If you hold the "special" key, your player position will be used.
 
 ## Dependencies
 
