@@ -5,12 +5,18 @@ local function measure(stack, player, pointed)
 	if not stack or not player or not pointed then
 		return
 	end
-	if pointed.type ~= "node" or not pointed.under or not pointed.above then
+	local controls = player:get_player_control()
+	local pos
+	if controls.aux1 then
+		pos = vector.round(player:get_pos())
+	elseif pointed.type == "node" then
+		if controls.sneak then
+			pos = pointed.above
+		else
+			pos = pointed.under
+		end
+	else
 		return
-	end
-	local pos = pointed.under
-	if player:get_player_control().sneak then
-		pos = pointed.above
 	end
 	local name = player:get_player_name()
 	local meta = stack:get_meta()
@@ -40,39 +46,52 @@ minetest.register_on_leaveplayer(function(player)
 	player_waypoints[name] = nil
 end)
 
-local function waypoint(_, player, pointed)
+local function waypoint(stack, player, pointed)
 	if not player or not pointed then
 		return
 	end
-	local name = player:get_player_name()
-	local new_pos
-	if pointed.type == "node" and pointed.under and pointed.above then
-		if player:get_player_control().sneak then
-			new_pos = pointed.above
-		else
-			new_pos = pointed.under
+	local controls = player:get_player_control()
+	if pointed.type == "node" and not controls.sneak then
+		local pos = pointed.under
+		local node = minetest.get_node(pos)
+		local def = minetest.registered_nodes[node.name]
+		if def and def.on_rightclick then
+			return def.on_rightclick(pos, node, player, stack, pointed) or stack, nil
 		end
 	end
-	local id = player_waypoints[name]
-	if id then
-		if new_pos then
-			player:hud_change(id, "world_pos", new_pos)
+	local pos
+	if controls.aux1 then
+		pos = vector.round(player:get_pos())
+	elseif pointed.type == "node" then
+		if controls.sneak then
+			pos = pointed.above
 		else
-			player:hud_remove(id)
+			pos = pointed.under
+		end
+	end
+	local name = player:get_player_name()
+	local point = player_waypoints[name]
+	if point then
+		if pos and not vector.equals(pos, point.pos) then
+			player:hud_change(point.id, "world_pos", pos)
+			player_waypoints[name].pos = pos
+		else
+			player:hud_remove(point.id)
 			player_waypoints[name] = nil
 		end
 		return
 	end
-	if not new_pos then
+	if not pos then
 		return
 	end
-	player_waypoints[name] = player:hud_add({
+	local id = player:hud_add({
 		hud_elem_type = "waypoint",
 		name = S("Tape Measure Waypoint"),
 		text = "m",
 		number = 0xFFFFFF,
-		world_pos = new_pos
+		world_pos = pos
 	})
+	player_waypoints[name] = {id = id, pos = pos}
 end
 
 minetest.register_tool("tape_measure:tape_measure", {
